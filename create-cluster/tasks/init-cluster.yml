@@ -5,7 +5,7 @@
 
 - name: Inicializando o cluster k8s
   command:
-    kubeadm init
+    kubeadm init --apiserver-advertise-address {{K8S_MASTER_NODE_IP}}
   register: kubeadm_init
 
 - name: Criando o diretorio .kube
