@@ -5,7 +5,8 @@
 
 - name: Inicializando o cluster k8s
   command:
-    kubeadm init --apiserver-advertise-address {{K8S_MASTER_NODE_IP}}
+    kubeadm init --apiserver-advertise-address="{{K8S_MASTER_NODE_IP}}" --apiserver-cert-extra-sans="{{K8S_MASTER_NODE_IP}}" --pod-network-cidr=192.168.0.0/16
+
   register: kubeadm_init
 
 - name: Criando o diretorio .kube
@@ -20,8 +21,12 @@
     state: link
 
 - name: Configurando o pod network Weavenet
-  shell: kubectl apply -f {{ default_url_weavenet }}
-  register: weavenet_result
+  shell: kubectl apply -f {{ default_url_calico }}
+  register: calico_result
+
+- name: Configurando o pod network Weavenet
+  shell: kubectl apply -f {{ resource_url_calico }}
+  register: calico_resource
 
 - name: Pegando o token para adicionar os workers no cluster
   shell: kubeadm token list | cut -d ' ' -f1  | sed -n '2p'

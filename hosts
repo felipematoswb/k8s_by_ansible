@@ -3,6 +3,7 @@
 
 [k8s-workers]
 192.168.43.221
+192.168.43.222
 
 [k8s-workers:vars]
 K8S_MASTER_NODE_IP=192.168.43.220
